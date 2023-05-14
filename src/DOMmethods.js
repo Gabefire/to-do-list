@@ -47,24 +47,18 @@ const DOMmethods = (() => {
   };
 
   const displayProjects = (projectArray) => {
-    const projectsContainer = document.getElementById("projects-section");
+    const projectsContainer = document.getElementById("projects-container");
     projectsContainer.innerHTML = "";
-    const projectFormElement = document.getElementById("project-form");
-    projectFormElement.style.visibility = "hidden";
-    projectFormElement.reset();
-    for (let i = 0; i < projectArray.length; i += 1) {
+    for (let i = 1; i < projectArray.length; i += 1) {
       const project = document.createElement("div");
       project.className = "project";
+      project.id = `project-${i}`;
       const projectTitle = document.createElement("div");
-      projectTitle.textContent = projectArray[i].name;
-      projectTitle.id = `project-${i}`;
-      projectTitle.className = "project-title";
-      project.appendChild(projectTitle);
+      projectTitle.textContent = projectArray[i].title;
       const deleteProjectBtn = document.createElement("button");
       deleteProjectBtn.className = "deleteProjectBtn";
       deleteProjectBtn.textContent = "X";
       deleteProjectBtn.id = `delete-project-button-${i}`;
-      project.appendChild(deleteProjectBtn);
 
       projectsContainer.appendChild(project);
     }
