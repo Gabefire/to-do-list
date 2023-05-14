@@ -2,42 +2,45 @@ const DOMmethods = (() => {
   const displayTasks = (projectArray) => {
     const tasksContainer = document.getElementById("tasks-container");
     tasksContainer.innerHTML = "";
-    for (let i = 0; i < projectArray.length; i += 1) {
-      for (let x = 0; x < projectArray[i].length; x += 1) {
-        const task = document.createElement("div");
-        task.className = "task";
-        task.id = `task-${x}`;
-        for (let y = 0; y < projectArray[i][x]; y += 1) {
-          const checkbox = document.createElement("checkbox");
-          checkbox.checked = projectArray[i][x].completed;
-          task.appendChild(checkbox);
+    console.log(projectArray);
+    for (let x = 0; x < projectArray.length; x += 1) {
+      const taskArray = projectArray[x].taskArray;
+      for (let i = 0; i < taskArray.length; i += 1) {
+        const task = taskArray[i];
 
-          const titleContainer = document.createElement("div");
-          titleContainer.className = "titleContainer";
-          const title = document.createElement("div");
-          title.className = "task-title";
-          title.textContent = projectArray[i][x].title;
-          titleContainer.appendChild("title");
-          const date = document.createElement("div");
-          date.className = "task-date";
-          date.textContent = projectArray[i][x].dueDate;
-          titleContainer.appendChild("date");
-          task.appendChild(titleContainer);
+        const taskContainer = document.createElement("div");
+        taskContainer.className = "task";
+        taskContainer.id = `task-${x}`;
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = task.completed;
+        taskContainer.appendChild(checkbox);
 
-          const projectName = document.createElement("div");
-          projectName.className = "project-name";
-          projectName.textContent = projectArray[i].name;
-          projectName.id = `project ${i}`;
-          task.appendChild(projectName);
+        const titleContainer = document.createElement("div");
+        titleContainer.className = "titleContainer";
+        const title = document.createElement("div");
+        title.className = "task-title";
+        title.textContent = task.title;
+        titleContainer.appendChild(title);
+        const date = document.createElement("div");
+        date.className = "task-date";
+        date.textContent = task.dueDate;
+        titleContainer.appendChild(date);
+        taskContainer.appendChild(titleContainer);
 
-          const deleteTaskBtn = document.createElement("button");
-          deleteTaskBtn.id = `delete-task-button-${x}`;
-          deleteTaskBtn.className = "task-delete-button";
-          deleteTaskBtn.textContent = "X";
-          task.appendChild(deleteTaskBtn);
+        const projectName = document.createElement("div");
+        projectName.className = "project-name";
+        projectName.textContent = projectArray[x].name;
+        projectName.id = `project ${x}`;
+        taskContainer.appendChild(projectName);
 
-          tasksContainer.appendChild(task);
-        }
+        const deleteTaskBtn = document.createElement("button");
+        deleteTaskBtn.id = `delete-task-button-${i}`;
+        deleteTaskBtn.className = "task-delete-button";
+        deleteTaskBtn.textContent = "X";
+        taskContainer.appendChild(deleteTaskBtn);
+
+        tasksContainer.appendChild(taskContainer);
       }
     }
   };
@@ -69,7 +72,7 @@ const DOMmethods = (() => {
   const displayTitle = (projectContainer, visibility) => {
     const mainTitle = document.getElementById("main-title");
     mainTitle.textContent = `${projectContainer.name}:`;
-    const addTaskBtn = document.getElementById("addTask");
+    const addTaskBtn = document.getElementById("add-task-button");
     addTaskBtn.style.visibility = visibility;
   };
 

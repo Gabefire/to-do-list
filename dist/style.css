@@ -42,6 +42,10 @@ body {
   font-size: 1.5rem;
 }
 
+.icon-container:hover {
+  cursor: pointer;
+}
+
 .icon {
   width: 2.5rem;
   height: 2.5rem;
@@ -76,6 +80,30 @@ body {
 .projects-header button:hover {
   height: 35px;
   width: 155px;
+  cursor: pointer;
+}
+
+.project-title:hover {
+  cursor: pointer;
+}
+
+.project {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 10px;
+  padding: 5px;
+}
+
+.project:hover {
+  background-color: rgb(161, 161, 161);
+  border-radius: 10px;
+}
+
+.project button {
+  font-family: inherit;
+}
+
+.project button:hover {
   cursor: pointer;
 }
 
@@ -117,9 +145,58 @@ body {
   width: 155px;
   cursor: pointer;
 }
-
-#project-form {
+form {
+  visibility: hidden;
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 30%;
+  background-color: rgb(161, 161, 161);
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+#project-name-field,
+#task-name-field,
+#due-date-field,
+label {
+  width: 59%;
+  height: 40px;
+  font-size: 2rem;
+  font-family: inherit;
+  border: none;
+  border-radius: 10px;
+}
+
+.form-buttons {
+  width: 60%;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.cancel {
+  width: 60%;
+  height: 40px;
+  color: white;
+  font-size: 1.5rem;
+  background-color: red;
+  border: none;
+  border-radius: 10px;
+}
+
+.submit {
+  width: 60%;
+  height: 40px;
+  color: white;
+  font-size: 1.5rem;
+  background-color: green;
+  border: none;
+  border-radius: 10px;
 }
