@@ -47,25 +47,30 @@ const DOMmethods = (() => {
   };
 
   const displayProjects = (projectArray) => {
-    const projectsContainer = document.getElementById("projects-container");
+    const projectsContainer = document.getElementById("projects-section");
     projectsContainer.innerHTML = "";
-    for (let i = 1; i < projectArray.length; i += 1) {
+    for (let i = 0; i < projectArray.length; i += 1) {
       const project = document.createElement("div");
       project.className = "project";
       project.id = `project-${i}`;
       const projectTitle = document.createElement("div");
-      projectTitle.textContent = projectArray[i].title;
+      projectTitle.className = "project-title";
+      projectTitle.id = `project-${i}`;
+      projectTitle.textContent = projectArray[i].name;
+      project.appendChild(projectTitle);
       const deleteProjectBtn = document.createElement("button");
       deleteProjectBtn.className = "deleteProjectBtn";
       deleteProjectBtn.textContent = "X";
       deleteProjectBtn.id = `delete-project-button-${i}`;
+      project.appendChild(deleteProjectBtn);
 
       projectsContainer.appendChild(project);
     }
   };
 
   const displayTitle = (projectContainer, visibility, index) => {
-    const mainTitle = document.querySelector(".main-title");
+    const mainTitle = document.createElement("h3");
+    mainTitle.className = "main-title";
     mainTitle.textContent = `${projectContainer.name}:`;
     mainTitle.id = `project ${index}`;
     const addTaskBtn = document.createElement("button");
@@ -73,6 +78,8 @@ const DOMmethods = (() => {
     addTaskBtn.id = "add-task-button";
     addTaskBtn.setAttribute("index", index);
     addTaskBtn.textContent = "+ Add Task";
+    topBar.innerHTML = "";
+    topBar.appendChild(mainTitle);
     topBar.appendChild(addTaskBtn);
 
     addTaskBtn.style.visibility = visibility;
