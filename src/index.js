@@ -5,24 +5,28 @@ import Task from "./task";
 
 const eventListeners = (() => {
   const allContainer = new Container("Inbox");
-  DOMmethods.displayTitle(allContainer, "hidden");
+  DOMmethods.displayTitle(allContainer, "hidden", NaN);
 
-  const addTask = (project) => {
-    const addTaskBtn = document.getElementById("add-task-button");
-    const taskFormElement = document.getElementById("task-form");
-    addTaskBtn.addEventListener("click", () => {
-      taskFormElement.style.visibility = "visible";
-      const submitTaskBtn = document.getElementById("task-submit-button");
-      submitTaskBtn.addEventListener("click", () => {
-        const taskName = document.getElementById("task-name-field");
-        const dueDate = document.getElementById("due-date-field");
-        const task = new Task(taskName.value, dueDate.value);
-        project.add(task);
-        taskFormElement.style.visibility = "hidden";
-        DOMmethods.displayTasks([project]);
-      });
+  const addTaskBtn = document.getElementById("add-task-button");
+  const taskFormElement = document.getElementById("task-form");
+  addTaskBtn.addEventListener("click", () => {
+    taskFormElement.style.visibility = "visible";
+    const submitTaskBtn = document.getElementById("task-submit-button");
+    submitTaskBtn.addEventListener("click", () => {
+      const mainTitle = document.querySelector(".main-title");
+      const index = mainTitle.id.slice(-1);
+      const { projectArray } = allContainer;
+      const taskName = document.getElementById("task-name-field");
+      const dueDate = document.getElementById("due-date-field");
+      const task = new Task(taskName.value, dueDate.value);
+      const project = projectArray[index];
+      console.log(project);
+      project.add(task);
+      taskFormElement.reset();
+      taskFormElement.style.visibility = "hidden";
+      DOMmethods.displayTasks(project.getTaskArray(), index);
     });
-  };
+  });
 
   const selectProject = (container) => {
     const projectBtns = document.querySelectorAll(".project-title");
@@ -30,9 +34,8 @@ const eventListeners = (() => {
       btn.addEventListener("click", (e) => {
         const index = e.target.id.slice(-1);
         const project = container.projectArray[index];
-        DOMmethods.displayTitle(project, "visible");
-        DOMmethods.displayTasks([container]);
-        addTask(project);
+        DOMmethods.displayTitle(project, "visible", index);
+        DOMmethods.displayTasks(project.getTaskArray(), index);
       });
     });
   };
@@ -41,11 +44,13 @@ const eventListeners = (() => {
     const projectName = document.getElementById("project-name-field");
     const title = projectName.value;
     const project = new Project(title);
-    DOMmethods.displayTitle(project, "visible");
+    const projectArrayLength = allContainer.projectArray.length;
+    console.log(projectArrayLength);
+    DOMmethods.displayTitle(project, "visible", projectArrayLength);
+    DOMmethods.displayTasks(project.getTaskArray(), projectArrayLength);
     allContainer.add(project);
     DOMmethods.displayProjects(allContainer.projectArray);
     selectProject(allContainer);
-    addTask(project);
   };
   const addProjectBtn = document.getElementById("add-project-button");
   const projectFormElement = document.getElementById("project-form");
@@ -62,7 +67,7 @@ const eventListeners = (() => {
 
   const inboxBtn = document.getElementById("inbox");
   inboxBtn.addEventListener("click", () => {
-    DOMmethods.displayTitle(allContainer, "hidden");
-    DOMmethods.displayTasks(allContainer);
+    DOMmethods.displayTitle(allContainer, "hidden", NaN);
+    DOMmethods.displayTasks(allContainer.getTaskArray(), -1);
   });
 })();

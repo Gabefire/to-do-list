@@ -11,4 +11,8 @@ export default class Project {
   remove(index) {
     this.taskArray.slice(index);
   }
+
+  getTaskArray() {
+    return this.taskArray;
+  }
 }
