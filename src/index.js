@@ -47,7 +47,7 @@ function addTask() {
 
 // Project Controls //
 
-const selectProject = (container) => {
+function selectProject(container) {
   const projectBtns = document.querySelectorAll(".project-title");
   projectBtns.forEach((btn) => {
     btn.addEventListener("click", (e) => {
@@ -58,7 +58,7 @@ const selectProject = (container) => {
       addTask();
     });
   });
-};
+}
 
 function deleteProjectListener() {
   const deleteProjectBtns = document.querySelectorAll(".deleteProjectBtn");
@@ -75,7 +75,7 @@ function deleteProjectListener() {
   });
 }
 
-const getItems = () => {
+function getItems() {
   const projectName = document.getElementById("project-name-field");
   const title = projectName.value;
   const project = new Project(title);
@@ -90,7 +90,9 @@ const getItems = () => {
   DOMmethods.displayProjects(allContainer.projectArray);
   selectProject(allContainer);
   deleteProjectListener();
-};
+}
+
+// Initial Task Listeners
 
 const addProjectBtn = document.getElementById("add-project-button");
 const projectFormElement = document.getElementById("project-form");
