@@ -2,44 +2,51 @@ const DOMmethods = (() => {
   const displayTasks = (taskArray, projectIndex) => {
     const tasksContainer = document.getElementById("tasks-container");
     tasksContainer.innerHTML = "";
-    taskArray.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    const sortedArray = taskArray.sort(
+      (a, b) => new Date(a.dueDate) - new Date(b.dueDate)
+    );
     if (taskArray.length === 0) {
       return;
     }
     let i = 0;
-    console.log(taskArray);
-    taskArray.forEach((task) => {
+    sortedArray.forEach((task) => {
       const taskContainer = document.createElement("div");
-      taskContainer.className = "task";
-      taskContainer.id = `task-${i}`;
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.checked = task.completed;
-      taskContainer.appendChild(checkbox);
 
       const titleContainer = document.createElement("div");
       titleContainer.className = "titleContainer";
       const title = document.createElement("div");
       title.className = "task-title";
       title.textContent = task.title;
-      titleContainer.appendChild(title);
       const date = document.createElement("div");
       date.className = "task-date";
       date.textContent = task.dueDate;
+      taskContainer.className = "task";
+      taskContainer.id = `task-${i}`;
+      const checkbox = document.createElement("input");
+      checkbox.type = "checkbox";
+      checkbox.checked = task.completed;
+      checkbox.id = `Task ${i} project ${projectIndex}`;
+      checkbox.className = "checkbox-task";
+      titleContainer.appendChild(checkbox);
+      titleContainer.appendChild(title);
       titleContainer.appendChild(date);
       taskContainer.appendChild(titleContainer);
 
+      const rightItems = document.createElement("div");
+      rightItems.className = "right";
       const projectName = document.createElement("div");
       projectName.className = "project-name";
       projectName.textContent = task.projectName;
       if (projectIndex >= 0) projectName.id = `project ${projectIndex}`;
-      taskContainer.appendChild(projectName);
+      rightItems.appendChild(projectName);
 
       const deleteTaskBtn = document.createElement("button");
       deleteTaskBtn.id = `delete-task-button-${i}`;
       deleteTaskBtn.className = "task-delete-button";
       deleteTaskBtn.textContent = "X";
-      taskContainer.appendChild(deleteTaskBtn);
+      rightItems.appendChild(deleteTaskBtn);
+      taskContainer.appendChild(rightItems);
 
       tasksContainer.appendChild(taskContainer);
       i += 1;

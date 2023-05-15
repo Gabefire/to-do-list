@@ -200,3 +200,40 @@ label {
   border: none;
   border-radius: 10px;
 }
+
+#tasks-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#tasks-container .task:nth-child(odd) {
+  background-color: rgb(224, 224, 224);
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  padding: 5px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+}
+
+#tasks-container .task:hover {
+  background-color: rgb(161, 161, 161);
+}
+
+.titleContainer {
+  display: flex;
+  gap: 20px;
+}
+
+.task-date {
+  flex: 1;
+}
+
+.right {
+  display: flex;
+  gap: 20px;
+}
