@@ -44,6 +44,7 @@ const DOMmethods = (() => {
       const deleteTaskBtn = document.createElement("button");
       deleteTaskBtn.id = `delete-task-button-${i}`;
       deleteTaskBtn.className = "task-delete-button";
+      deleteTaskBtn.setAttribute("data-project-name", task.projectName);
       deleteTaskBtn.textContent = "X";
       rightItems.appendChild(deleteTaskBtn);
       taskContainer.appendChild(rightItems);

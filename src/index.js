@@ -4,35 +4,10 @@ import Container from "./container";
 import Task from "./task";
 
 const allContainer = new Container("Inbox");
-const defaultProject = new Project("Clean the House");
-const task1 = new Task("Wash the Dishes", "2023-05-16", "Clean the House");
-const task2 = new Task("Take Out the Trash", "2023-05-21", "Clean the House");
-const task3 = new Task("Mop the Floor", "2023-05-15", "Clean the House");
-defaultProject.add(task1);
-defaultProject.add(task2);
-defaultProject.add(task3);
 
-const defaultProject2 = new Project("Paint the Bedroom");
-const task4 = new Task(
-  "Buy Cleaning Supplies",
-  "2023-05-16",
-  "Paint the Bedroom"
-);
-const task5 = new Task("But the Paint", "2022-11-26", "Paint the Bedroom");
-const task6 = new Task("Tape the Bedroom", "2025-11-26", "Paint the Bedroom");
+// Task Controls //
 
-defaultProject2.add(task4);
-defaultProject2.add(task5);
-defaultProject2.add(task6);
-
-allContainer.add(defaultProject);
-allContainer.add(defaultProject2);
-
-DOMmethods.displayProjects(allContainer.projectArray);
-DOMmethods.displayTitle(allContainer, "hidden", NaN);
-DOMmethods.displayTasks(allContainer.getTaskArray(), -1);
-
-function removeTaskListener() {
+function cancelTaskListener() {
   const taskFormElement = document.getElementById("task-form");
   taskFormElement.reset();
   taskFormElement.style.visibility = "hidden";
@@ -60,8 +35,8 @@ function addTaskListener() {
   submitTaskBtn.removeEventListener("click", submitTaskListener);
   submitTaskBtn.addEventListener("click", submitTaskListener);
   const cancelTaskBtn = document.getElementById("task-cancel-button");
-  submitTaskBtn.removeEventListener("click", removeTaskListener);
-  cancelTaskBtn.addEventListener("click", removeTaskListener);
+  submitTaskBtn.removeEventListener("click", cancelTaskListener);
+  cancelTaskBtn.addEventListener("click", cancelTaskListener);
 }
 
 function addTask() {
@@ -69,6 +44,8 @@ function addTask() {
   addTaskBtn.removeEventListener("click", addTaskListener);
   addTaskBtn.addEventListener("click", addTaskListener);
 }
+
+// Project Controls //
 
 const selectProject = (container) => {
   const projectBtns = document.querySelectorAll(".project-title");
@@ -89,7 +66,6 @@ function deleteProjectListener() {
     btn.addEventListener("click", (e) => {
       const index = e.target.id.slice(-1);
       allContainer.remove(index);
-      console.log(allContainer.projectArray);
       DOMmethods.displayProjects(allContainer.projectArray);
       selectProject(allContainer);
       DOMmethods.displayTitle(allContainer, "hidden", NaN);
@@ -149,5 +125,37 @@ upcomingBtn.addEventListener("click", () => {
   DOMmethods.displayTasks(allContainer.filterDate(7), -1);
 });
 
+// Display at start
+
 selectProject(allContainer);
+
+// Default project and task values
+
+const defaultProject = new Project("Clean the House");
+const task1 = new Task("Wash the Dishes", "2023-05-16", "Clean the House");
+const task2 = new Task("Take Out the Trash", "2023-05-21", "Clean the House");
+const task3 = new Task("Mop the Floor", "2023-05-15", "Clean the House");
+defaultProject.add(task1);
+defaultProject.add(task2);
+defaultProject.add(task3);
+
+const defaultProject2 = new Project("Paint the Bedroom");
+const task4 = new Task(
+  "Buy Cleaning Supplies",
+  "2023-05-16",
+  "Paint the Bedroom"
+);
+const task5 = new Task("But the Paint", "2022-11-26", "Paint the Bedroom");
+const task6 = new Task("Tape the Bedroom", "2025-11-26", "Paint the Bedroom");
+
+defaultProject2.add(task4);
+defaultProject2.add(task5);
+defaultProject2.add(task6);
+
+allContainer.add(defaultProject);
+allContainer.add(defaultProject2);
+
+DOMmethods.displayProjects(allContainer.projectArray);
+DOMmethods.displayTitle(allContainer, "hidden", NaN);
+DOMmethods.displayTasks(allContainer.getTaskArray(), -1);
 deleteProjectListener();
