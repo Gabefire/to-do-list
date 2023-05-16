@@ -1,13 +1,16 @@
-import DOMmethods from "./DOMmethods";
-import Project from "./project";
-import Container from "./container";
-import Task from "./task";
-import generateContainer from "./localStorage";
+import DOMmethods from "./modules/DOMmethods";
+import Project from "./modules/project";
+import Container from "./modules/container";
+import Task from "./modules/task";
+import generateContainer from "./modules/localStorage";
 
 const allContainer = generateContainer();
 
 function storeContainer() {
-  localStorage.setItem("container", JSON.stringify(allContainer));
+  localStorage.setItem(
+    "projectArray",
+    JSON.stringify(allContainer.projectArray)
+  );
 }
 
 // Task Controls
@@ -27,14 +30,11 @@ function submitTaskListener() {
   const dueDate = document.getElementById("due-date-field");
   const project = projectArray[index];
   const task = new Task(taskName.value, dueDate.value, project.name, project);
-  project.add(task);
+  project.taskArray.push(task);
+  storeContainer();
   taskFormElement.reset();
   taskFormElement.style.visibility = "hidden";
-  DOMmethods.displayTasks(
-    project.getTaskArray(),
-    index,
-    allContainer.projectArray
-  );
+  DOMmethods.displayTasks(project, allContainer, false);
   taskEditButton();
 }
 
@@ -64,11 +64,7 @@ function selectProject(container) {
       const index = e.target.dataset.index;
       const project = container.projectArray[index];
       DOMmethods.displayTitle(project, "visible", index);
-      DOMmethods.displayTasks(
-        project.getTaskArray(),
-        index,
-        allContainer.projectArray
-      );
+      DOMmethods.displayTasks(project, allContainer, false);
       taskEditButton();
       addTask();
     });
@@ -81,14 +77,11 @@ function deleteProjectListener() {
     btn.addEventListener("click", (e) => {
       const index = e.target.dataset.index;
       allContainer.remove(index);
+      storeContainer();
       DOMmethods.displayProjects(allContainer.projectArray);
       selectProject(allContainer);
       DOMmethods.displayTitle(allContainer, "hidden", NaN);
-      DOMmethods.displayTasks(
-        allContainer.getTaskArray(),
-        -1,
-        allContainer.projectArray
-      );
+      DOMmethods.displayTasks(allContainer, allContainer, false);
       taskEditButton();
       deleteProjectListener();
     });
@@ -105,13 +98,10 @@ function getItems() {
   projectFormElement.reset();
   DOMmethods.displayTitle(project, "visible", projectArrayLength);
   addTask();
-  DOMmethods.displayTasks(
-    project.getTaskArray(),
-    projectArrayLength,
-    allContainer.projectArray
-  );
+  DOMmethods.displayTasks(project, allContainer, false);
   taskEditButton();
   allContainer.add(project);
+  storeContainer();
   DOMmethods.displayProjects(allContainer.projectArray);
   selectProject(allContainer);
   deleteProjectListener();
@@ -134,11 +124,7 @@ addProjectBtn.addEventListener("click", () => {
 
 function inboxListenerFunction() {
   DOMmethods.displayTitle(allContainer, "hidden", "inbox");
-  DOMmethods.displayTasks(
-    allContainer.getTaskArray(),
-    -1,
-    allContainer.projectArray
-  );
+  DOMmethods.displayTasks(allContainer, allContainer, false);
   taskEditButton();
 }
 
@@ -148,11 +134,7 @@ inboxBtn.addEventListener("click", inboxListenerFunction);
 function todayListenerFunction() {
   const todayContainer = new Container("Today");
   DOMmethods.displayTitle(todayContainer, "hidden", "today");
-  DOMmethods.displayTasks(
-    allContainer.filterDate(1),
-    -1,
-    allContainer.projectArray
-  );
+  DOMmethods.displayTasks(allContainer, allContainer, true, 1);
   taskEditButton();
 }
 
@@ -162,11 +144,7 @@ todayBtn.addEventListener("click", todayListenerFunction);
 function upcomingListenerFunction() {
   const upcomingContainer = new Container("Upcoming");
   DOMmethods.displayTitle(upcomingContainer, "hidden", "upcoming");
-  DOMmethods.displayTasks(
-    allContainer.filterDate(7),
-    -1,
-    allContainer.projectArray
-  );
+  DOMmethods.displayTasks(allContainer, allContainer, true, 7);
   taskEditButton();
 }
 
@@ -183,10 +161,10 @@ function taskEditButton() {
       const projectIndex = e.target.dataset.project;
       const { projectArray } = allContainer;
       const project = projectArray[projectIndex];
-      project.remove(taskIndex);
+      project.taskArray.splice(taskIndex, 1);
       const mainTitle = document.querySelector(".main-title");
       let titleName = mainTitle.id;
-      const taskArray = project.getTaskArray();
+      const { taskArray } = project;
 
       if (taskArray.length === 0) {
         allContainer.remove(projectIndex);
@@ -195,43 +173,28 @@ function taskEditButton() {
 
       if (titleName === "inbox") {
         DOMmethods.displayTitle(allContainer, "hidden", "inbox");
-        DOMmethods.displayTasks(
-          allContainer.getTaskArray(),
-          -1,
-          allContainer.projectArray
-        );
+        DOMmethods.displayTasks(allContainer, allContainer, false);
         taskEditButton();
       } else if (titleName === "upcoming") {
         const upcomingContainer = new Container("Upcoming");
         DOMmethods.displayTitle(upcomingContainer, "hidden", "upcoming");
-        DOMmethods.displayTasks(
-          allContainer.filterDate(7),
-          -1,
-          allContainer.projectArray
-        );
+        DOMmethods.displayTasks(allContainer, allContainer, true, 7);
         taskEditButton();
       } else if (titleName === "today") {
         const todayContainer = new Container("Today");
         DOMmethods.displayTitle(todayContainer, "hidden", "today");
-        DOMmethods.displayTasks(
-          allContainer.filterDate(1),
-          -1,
-          allContainer.projectArray
-        );
+        DOMmethods.displayTasks(allContainer, allContainer, true, 1);
         taskEditButton();
       } else {
         DOMmethods.displayTitle(project, "visible", projectIndex);
-        DOMmethods.displayTasks(
-          project.getTaskArray(),
-          projectIndex,
-          allContainer.projectArray
-        );
+        DOMmethods.displayTasks(project, allContainer, false);
         addTask();
         taskEditButton();
       }
       DOMmethods.displayProjects(allContainer.projectArray);
       selectProject(allContainer);
       deleteProjectListener();
+      storeContainer();
     });
   });
 
@@ -242,72 +205,19 @@ function taskEditButton() {
       const projectIndex = e.target.dataset.project;
       const { projectArray } = allContainer;
       const project = projectArray[projectIndex];
-      const task = project.getTaskArray()[taskIndex];
+      const task = project.taskArray[taskIndex];
 
       task.completed = e.target.checked;
+      storeContainer();
     });
   });
 }
 
-// Default project and task values
-
-const defaultProject = new Project("Clean the House");
-const task1 = new Task(
-  "Wash the Dishes",
-  "2023-05-16",
-  "Clean the House",
-  defaultProject
-);
-const task2 = new Task(
-  "Take Out the Trash",
-  "2023-05-21",
-  "Clean the House",
-  defaultProject
-);
-const task3 = new Task(
-  "Mop the Floor",
-  "2023-05-15",
-  "Clean the House",
-  defaultProject
-);
-defaultProject.add(task1);
-defaultProject.add(task2);
-defaultProject.add(task3);
-
-const defaultProject2 = new Project("Paint the Bedroom");
-const task4 = new Task(
-  "Buy Cleaning Supplies",
-  "2023-05-16",
-  "Paint the Bedroom",
-  defaultProject2
-);
-const task5 = new Task(
-  "Buy the Paint",
-  "2022-11-26",
-  "Paint the Bedroom",
-  defaultProject2
-);
-const task6 = new Task(
-  "Tape the Bedroom",
-  "2025-11-26",
-  "Paint the Bedroom",
-  defaultProject2
-);
-
-defaultProject2.add(task4);
-defaultProject2.add(task5);
-defaultProject2.add(task6);
-
-allContainer.add(defaultProject);
-allContainer.add(defaultProject2);
+// Default values
 
 DOMmethods.displayProjects(allContainer.projectArray);
 DOMmethods.displayTitle(allContainer, "hidden", "inbox");
-DOMmethods.displayTasks(
-  allContainer.getTaskArray(),
-  -1,
-  allContainer.projectArray
-);
+DOMmethods.displayTasks(allContainer, allContainer, false);
 taskEditButton();
 selectProject(allContainer);
 deleteProjectListener();
