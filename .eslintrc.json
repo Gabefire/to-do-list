@@ -10,6 +10,12 @@
     "ecmaVersion": "latest"
   },
   "rules": {
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false
+      }
+    ],
     "max-classes-per-file": ["error", 2]
   }
 }

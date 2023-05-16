@@ -1,33 +1,44 @@
 const DOMmethods = (() => {
-  const displayTasks = (taskArray, projectIndex) => {
+  const displayTasks = (array, projectIndex, projectArray) => {
     const tasksContainer = document.getElementById("tasks-container");
     tasksContainer.innerHTML = "";
 
-    const sortedArray = taskArray.sort(
+    const sortedArray = array.sort(
       (a, b) => new Date(a.dueDate) - new Date(b.dueDate)
     );
-    if (taskArray.length === 0) {
+    if (array.length === 0) {
       return;
     }
-    let i = 0;
+
     sortedArray.forEach((task) => {
+      const projectTask = task.projectLocation;
+      const projectLocation = projectArray.indexOf(projectTask);
+      const { taskArray } = projectTask;
+      const taskLocation = taskArray.indexOf(task);
       const taskContainer = document.createElement("div");
+      taskContainer.setAttribute("data-index", taskLocation);
+      taskContainer.setAttribute("data-project", projectLocation);
 
       const titleContainer = document.createElement("div");
       titleContainer.className = "titleContainer";
+
       const title = document.createElement("div");
       title.className = "task-title";
       title.textContent = task.title;
+      title.setAttribute("data-index", taskLocation);
+      title.setAttribute("data-project", projectLocation);
       const date = document.createElement("div");
       date.className = "task-date";
       date.textContent = task.dueDate;
+      date.setAttribute("data-index", taskLocation);
+      date.setAttribute("data-project", projectLocation);
       taskContainer.className = "task";
-      taskContainer.id = `task-${i}`;
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.checked = task.completed;
-      checkbox.id = `Task ${i} project ${projectIndex}`;
       checkbox.className = "checkbox-task";
+      checkbox.setAttribute("data-index", taskLocation);
+      checkbox.setAttribute("data-project", projectLocation);
       titleContainer.appendChild(checkbox);
       titleContainer.appendChild(title);
       titleContainer.appendChild(date);
@@ -42,15 +53,14 @@ const DOMmethods = (() => {
       rightItems.appendChild(projectName);
 
       const deleteTaskBtn = document.createElement("button");
-      deleteTaskBtn.id = `delete-task-button-${i}`;
       deleteTaskBtn.className = "task-delete-button";
-      deleteTaskBtn.setAttribute("data-project-name", task.projectName);
       deleteTaskBtn.textContent = "X";
+      deleteTaskBtn.setAttribute("data-index", taskLocation);
+      deleteTaskBtn.setAttribute("data-project", projectLocation);
       rightItems.appendChild(deleteTaskBtn);
       taskContainer.appendChild(rightItems);
 
       tasksContainer.appendChild(taskContainer);
-      i += 1;
     });
   };
 
@@ -61,15 +71,18 @@ const DOMmethods = (() => {
       const project = document.createElement("div");
       project.className = "project";
       project.id = `project-${i}`;
+      project.setAttribute("data-index", i);
       const projectTitle = document.createElement("div");
       projectTitle.className = "project-title";
       projectTitle.id = `project-${i}`;
+      projectTitle.setAttribute("data-index", i);
       projectTitle.textContent = projectArray[i].name;
       project.appendChild(projectTitle);
       const deleteProjectBtn = document.createElement("button");
       deleteProjectBtn.className = "deleteProjectBtn";
       deleteProjectBtn.textContent = "X";
       deleteProjectBtn.id = `delete-project-button-${i}`;
+      deleteProjectBtn.setAttribute("data-index", i);
       project.appendChild(deleteProjectBtn);
 
       projectsContainer.appendChild(project);
@@ -80,7 +93,7 @@ const DOMmethods = (() => {
     const mainTitle = document.createElement("h3");
     mainTitle.className = "main-title";
     mainTitle.textContent = `${projectContainer.name}:`;
-    mainTitle.id = `project ${index}`;
+    mainTitle.id = index;
     const addTaskBtn = document.createElement("button");
     const topBar = document.querySelector(".top-bar");
     addTaskBtn.id = "add-task-button";

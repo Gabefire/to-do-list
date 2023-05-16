@@ -23,6 +23,10 @@ export default class Container {
     return finalTaskArray;
   }
 
+  getProjectArray() {
+    return this.projectArray;
+  }
+
   filterDate(days) {
     const taskArray = this.getTaskArray();
     const today = new Date();

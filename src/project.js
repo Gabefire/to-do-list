@@ -9,7 +9,7 @@ export default class Project {
   }
 
   remove(index) {
-    this.taskArray.slice(index);
+    this.taskArray.splice(index, 1);
   }
 
   getTaskArray() {
