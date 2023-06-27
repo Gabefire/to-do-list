@@ -11,15 +11,19 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "css-loader": "^6.8.1",
     "eslint": "^8.40.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.27.5",
     "html-loader": "^4.2.0",
+    "style-loader": "^3.3.3",
     "webpack-cli": "^5.1.1"
   },
   "dependencies": {
     "date-fns": "^2.30.0",
+    "firebase": "^9.23.0",
+    "firebaseui": "^6.0.2",
     "lodash": "^4.17.21"
   }
 }

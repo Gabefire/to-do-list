@@ -4,6 +4,7 @@ body {
   grid-template-rows: min-content 1fr;
   padding: 0;
   margin: 0;
+  height: 100vh;
   font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
@@ -27,11 +28,10 @@ body {
 .sidebar {
   padding-top: 10px;
   padding-left: 10px;
-  grid-row: 2/3;
   display: flex;
   flex-direction: column;
   gap: 30px;
-  height: 100vh;
+  height: 100%;
   background-color: rgb(224, 224, 224);
 }
 
@@ -145,7 +145,8 @@ body {
   width: 155px;
   cursor: pointer;
 }
-form {
+#project-form,
+#task-form {
   visibility: hidden;
   position: absolute;
   top: 50%;
@@ -236,4 +237,58 @@ label {
 .right {
   display: flex;
   gap: 20px;
+}
+
+/* Firebase */
+.auth {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.auth > * {
+  width: 30%;
+  position: relative;
+  top: 20%;
+}
+
+.auth h1 {
+  text-align: center;
+}
+
+.auth label {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5rem;
+  width: 400px;
+}
+
+.login {
+  margin-top: 30px;
+}
+
+.auth button {
+  color: white;
+  background-color: rgb(24, 24, 165);
+  border: none;
+  width: 400px;
+  height: 40px;
+  font-family: inherit;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.login-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-direction: column;
+  border: 3px solid grey;
+  gap: 20px;
+  padding: 30px;
 }

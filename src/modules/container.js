@@ -1,5 +1,3 @@
-import addDays from "date-fns/addDays";
-
 export default class Container {
   constructor(name) {
     this.name = name;
@@ -25,16 +23,5 @@ export default class Container {
 
   getProjectArray() {
     return this.projectArray;
-  }
-
-  filterDate(days) {
-    const taskArray = this.getTaskArray();
-    const today = new Date();
-    const compareDate = addDays(today, days);
-    const finalArray = taskArray.filter((task) => {
-      const taskDate = new Date(task.dueDate);
-      return taskDate <= compareDate;
-    });
-    return finalArray;
   }
 }
