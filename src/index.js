@@ -1,9 +1,15 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 
 import generateContainer from "./modules/localStorage";
 
 import mainPage from "./modules/main";
+
+import "./style.css";
 
 // Firebase
 
@@ -19,6 +25,33 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const loginForm = document.querySelector(".auth");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const errorElement = document.querySelector(".error-handle");
+
+const loginButton = document.querySelector(".login");
+
+const loginEmailPassword = async (e) => {
+  e.preventDefault();
+  const loginEmail = email.value;
+  const loginPassword = password.value;
+
+  try {
+    const credential = await signInWithEmailAndPassword(
+      auth,
+      loginEmail,
+      loginPassword
+    );
+    console.log(credential.user);
+    loginForm.style.visibility = "hidden";
+  } catch (error) {
+    console.log(error);
+    errorElement.textContent = error;
+  }
+};
+
+loginButton.addEventListener("click", loginEmailPassword);
 
 // Local Storage
 

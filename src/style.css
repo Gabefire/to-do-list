@@ -1,7 +1,11 @@
+html {
+  margin: 0;
+}
+
 body {
   display: grid;
   grid-template-columns: 1fr 4fr;
-  grid-template-rows: min-content 1fr;
+  grid-template-rows: min-content 100vh;
   padding: 0;
   margin: 0;
   height: 100vh;
@@ -241,9 +245,12 @@ label {
 
 /* Firebase */
 .auth {
+  visibility: visible;
   height: 100%;
   width: 100%;
   position: absolute;
+  top: 0;
+  left: 0;
   background-color: white;
   display: flex;
   flex-direction: column;
