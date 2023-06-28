@@ -22,7 +22,7 @@ export default function mainPage(storeContainer, allContainer) {
     const project = projectArray[index];
     const task = new Task(taskName.value, dueDate.value, project.name, project);
     project.taskArray.push(task);
-    storeContainer();
+    storeContainer(allContainer);
     taskFormElement.reset();
     taskFormElement.style.visibility = "hidden";
     DOMmethods.displayTasks(project, allContainer, false);
@@ -68,7 +68,7 @@ export default function mainPage(storeContainer, allContainer) {
       btn.addEventListener("click", (e) => {
         const { index } = e.target.dataset;
         allContainer.remove(index);
-        storeContainer();
+        storeContainer(allContainer);
         DOMmethods.displayProjects(allContainer.projectArray);
         selectProject(allContainer);
         DOMmethods.displayTitle(allContainer, "hidden", NaN);
@@ -92,7 +92,7 @@ export default function mainPage(storeContainer, allContainer) {
     DOMmethods.displayTasks(project, allContainer, false);
     taskEditButton();
     allContainer.add(project);
-    storeContainer();
+    storeContainer(allContainer);
     DOMmethods.displayProjects(allContainer.projectArray);
     selectProject(allContainer);
     deleteProjectListener();
@@ -185,7 +185,7 @@ export default function mainPage(storeContainer, allContainer) {
         DOMmethods.displayProjects(allContainer.projectArray);
         selectProject(allContainer);
         deleteProjectListener();
-        storeContainer();
+        storeContainer(allContainer);
       });
     });
 
@@ -199,7 +199,7 @@ export default function mainPage(storeContainer, allContainer) {
         const task = project.taskArray[taskIndex];
 
         task.completed = e.target.checked;
-        storeContainer();
+        storeContainer(allContainer);
       });
     });
   }

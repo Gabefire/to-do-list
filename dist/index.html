@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo List</title>
-    <link rel="stylesheet" href="style.css" />
     <script src="bundle.js" defer></script>
   </head>
   <body>
@@ -13,31 +12,13 @@
     <form class="auth">
       <div class="login-content">
         <h1 class="login-header">To Do List</h1>
-        <label for="email">
+        <label for="email-field">
           Email:
-          <input type="email" id="email">
+          <input type="email" id="email-field">
         </label>
-        <label for="password">
+        <label for="password-field">
           Password:
-          <input type="password" id="password">
-        </label>
-        <div class="error-handle"></div>
-        <button class="login">Login</button>
-        <button class="signup">Sign Up</button>
-        <button class="local-storage">Local Storage</button>
-      </div>
-    </form>
-
-    <form class="sign-up-form">
-      <div class="login-content">
-        <h1 class="login-header">To Do List</h1>
-        <label for="email">
-          Email:
-          <input type="email" id="email">
-        </label>
-        <label for="password">
-          Password:
-          <input type="password" id="password">
+          <input type="password" id="password-field">
         </label>
         <div class="error-handle"></div>
         <button class="login">Login</button>
@@ -99,7 +80,7 @@
     </form>
     <form action="none" id="task-form">
       <input type="text" id="task-name-field" placeholder="Enter Task Name">
-      <label for="due-date"> 
+      <label for="due-date-field"> 
         Due-Date:
         <input type="date" id="due-date-field" name="due-date"></label>
       <div class="form-buttons">
